@@ -1,0 +1,18 @@
+#%RAML 1.0
+title: Groupb-DescisionService-Int-Dev-Project
+
+securitySchemes:
+  Authentication: !include securityScheme.raml
+traits:
+  ErrorResponses: !include ErrorRespose.raml
+  
+/Descision_Service:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include example.raml
+             
+    is:
+      - ErrorResponses

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<configuration doc:name="Configuration" doc:id="9f6e5798-7251-4d1d-8115-f92ae5b09fc1" defaultErrorHandler-ref="globalerrorhandlingError_Handler" />
+	<configuration-properties doc:name="Configuration properties" doc:id="aac934b2-25f8-462d-8f4b-3bf60e26730f" file="all.properties" />
+	<http:request-config name="HTTP_Request_covid" doc:name="HTTP Request configuration" doc:id="8ca66810-902c-4cd8-bdf3-6f5fa496e752" >
+		<http:request-connection host="${secure::app.covid}" />
+	</http:request-config>
+	<http:request-config name="HTTP_Request_weather" doc:name="HTTP Request configuration" doc:id="abd1e0e3-1992-4beb-880a-75f3fea74b77" >
+		<http:request-connection host="${secure::app.weather}" />
+	</http:request-config>
+	<http:request-config name="HTTP_Request_countries" doc:name="HTTP Request configuration" doc:id="24627709-f418-4cad-ac67-6737611fb967" >
+		<http:request-connection host="${secure::app.countries}" />
+	</http:request-config>
+	<http:request-config name="HTTP_Request_exchange" doc:name="HTTP Request configuration" doc:id="3afbd186-780a-4583-8f78-b5e2bcf9c5ef" >
+		<http:request-connection host="${secure::app.exchange}" />
+	</http:request-config>
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="daee14c3-7589-41e5-85f6-2ebb9913ec2d" file="all.properties" key="groupb" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+	<http:listener-config name="HTTP_Listener_descisionService" doc:name="HTTP Listener config" doc:id="2c374ee4-27b3-4b29-81dd-c9dc13ade46b" >
+		<http:listener-connection host="0.0.0.0" port="${secure::app.port}" />
+	</http:listener-config>
+</mule>

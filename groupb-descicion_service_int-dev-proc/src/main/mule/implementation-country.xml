@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+		<sub-flow name="country" doc:id="9311b5f6-d5ac-447a-b19d-95a42c7d5571" >
+		<http:request method="GET" doc:name="countries" doc:id="da4115ca-3f83-419d-a7f4-ba16b0e106c9" target="country11" config-ref="HTTP_Request_countries" path="${secure::countries.path}">
+			<reconnect-forever />
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="550cff17-6648-4333-b788-a41406067f3e">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="code1"><![CDATA[%dw 2.0
+output application/json
+var p = vars.country11.data filterObject ((value, key, index) -> (key as String == vars.weather.code[0])) 
+var filtered = vars.country11 filterObject ((value, key, index) -> (key as String != "data"))
+var filtered1 = filtered ++ "data": p
+var filtered2 = if(p =={}) filtered ++ "data":vars.country11.data filterObject ((value, key, index) -> (key as String ==  "BZ" ))else filtered1
+---
+(filtered2.data  pluck ((value, key, index) ->  key))[0]]]></ee:set-variable>
+				<ee:set-variable variableName="code2"><![CDATA[%dw 2.0
+output application/json
+var p = vars.country11.data filterObject ((value, key, index) -> (key as String == vars.weather.code[1])) 
+var filtered = vars.country11 filterObject ((value, key, index) -> (key as String != "data"))
+var filtered1 = filtered ++ "data": p
+var filtered2 = if(p =={}) filtered ++ "data":vars.country11.data filterObject ((value, key, index) -> (key as String ==  "BZ" ))else filtered1
+---
+(filtered2.data  pluck ((value, key, index) ->  key))[0]]]></ee:set-variable>
+				<ee:set-variable variableName="code3"><![CDATA[%dw 2.0
+output application/json
+var p = vars.country11.data filterObject ((value, key, index) -> (key as String == vars.weather.code[2] )) 
+var filtered =vars.country11 filterObject ((value, key, index) -> (key as String != "data"))
+var filtered1 = filtered ++ "data": p
+var filtered2 = if(p =={}) filtered ++ "data":vars.country11.data filterObject ((value, key, index) -> (key as String ==  "BZ" ))else filtered1
+---
+(filtered2.data  pluck ((value, key, index) ->  key))[0]]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="0a8dee3b-1720-4399-a932-028936818d92">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="country1"><![CDATA[%dw 2.0
+output application/json
+var p = vars.country11.data filterObject ((value, key, index) -> (key as String == vars.weather.code[0])) 
+var filtered = vars.country11  filterObject ((value, key, index) -> (key as String != "data"))
+---
+filtered ++ "data": p]]></ee:set-variable>
+				<ee:set-variable variableName="country2"><![CDATA[%dw 2.0
+output application/json
+var p = vars.country11.data filterObject ((value, key, index) -> (key as String == vars.weather.code[1])) 
+var filtered = vars.country11  filterObject ((value, key, index) -> (key as String != "data"))
+---
+filtered ++ "data": p]]></ee:set-variable>
+				<ee:set-variable variableName="country3"><![CDATA[%dw 2.0
+output application/json
+var p = vars.country11.data filterObject ((value, key, index) -> (key as String == vars.weather.code[2])) 
+var filtered = vars.country11  filterObject ((value, key, index) -> (key as String != "data"))
+---
+filtered ++ "data": p]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+	</sub-flow>
+	
+	</mule>

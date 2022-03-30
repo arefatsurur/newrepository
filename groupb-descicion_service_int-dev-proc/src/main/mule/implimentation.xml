@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:google-ad-manager="http://www.mulesoft.org/schema/mule/google-ad-manager" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/google-ad-manager http://www.mulesoft.org/schema/mule/google-ad-manager/current/mule-google-ad-manager.xsd">
+	<flow name="covid" doc:id="ed3f8d2d-9093-4b04-96aa-4bc7650f7bfc">
+		<flow-ref doc:name="covid1" doc:id="9dec50e1-6c0a-4efa-a674-2d973e8bfcef" name="Implementation-covid-api" />
+		<flow-ref doc:name="weather" doc:id="396b8e3a-5dac-4680-b6ce-9ab870300422" name="weather-Data" />
+		<flow-ref doc:name="country" doc:id="9774ad73-a581-4eee-ba8b-7b29102af1bb" name="country" />
+		<flow-ref doc:name="exchange" doc:id="3a6eb6e9-f743-4cbc-9663-613b50df6fc9" name="exchange" />
+	</flow>
+	
+	
+	
+	<flow name="All" doc:id="d3fe29b6-1b0d-431b-8115-85b4611e433f" >
+		<flow-ref doc:name="Flow Reference" doc:id="75053228-6feb-47e9-800a-e1ab558e7fc7" name="covid"/>
+		<ee:transform doc:name="Transform Message" doc:id="2410840f-3e00-4218-9c08-a294875643fe" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var code1= vars.weather.name[0]
+var code2= vars.weather.name[1]
+var code3= vars.weather.name[2]
+
+---
+[
+     {
+    ("covidTracking1 for " ++ code1): vars.covid[0],
+  ("weather data for "++ code1): vars.weathers1,
+     (code1): vars.country1,
+  ("exchange rate for "++ code1): vars.Exchange1
+  },
+     {
+    ("covidTracking1 for " ++ code2): vars.covid[1],
+  ("weather data for "++ code2): vars.weathers2,
+  (code2): vars.country2,
+  ("exchange rate for "++ code2): vars.Exchange2
+  },
+  
+  {
+    ("covidTracking1 for " ++ code3): vars.covid[2],
+  ("weather data for "++ code3): vars.weathers3,
+  (code3): vars.country3,
+  ("exchange rate for "++ code1): vars.Exchange3
+  }
+  
+  ]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
