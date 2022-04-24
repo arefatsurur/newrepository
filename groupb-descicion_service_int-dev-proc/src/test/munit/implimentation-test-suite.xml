@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="implimentation-test-suite.xml" />
+	<munit:test name="implimentation-test-suite-AllTest" doc:id="62f8afa3-a961-47e1-ad42-daf228e1cb5a" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to All" doc:id="260f8825-6f48-4bbb-a954-14bfeec217d2" name="All"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="5a4c005c-7a41-423f-bb0c-f4f92510ed8b" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="implimentation-test-suite-AllTest1" doc:id="6ce27051-c663-4ba3-9e21-ed74a45f54b2" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to All" doc:id="d2034056-1a20-4c90-830a-90ba6ad7ad29" name="All"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="b8120efc-2d2c-4c3a-bb3c-5c90e7271ff7" is="#[MunitTools::withMediaType('application/json')]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="implimentation-test-suite-AllTest2" doc:id="e821aac0-3894-4189-825d-90e2ac6f2fa5" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to All" doc:id="d186b0b5-9f76-421e-9680-9e1887f534a4" name="All"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="a9a77bc4-434e-46c8-9d9c-07e6e14f9b7f" expression="#[payload]" is="#[MunitTools::withEncoding('UTF-8')]"/>
+		</munit:validation>
+	</munit:test>
+
+</mule>

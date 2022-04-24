@@ -1,0 +1,58 @@
+#%RAML 1.0
+title: Groupb-DescisionService-Int-Dev-Project
+
+securitySchemes:
+  Authentication: !include securityScheme.raml
+traits:
+  ErrorResponses: !include ErrorRespose.raml
+  
+/Descision_Service:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              [{  
+                "Country": "USA",
+                "population": 310232863,
+                "deaths": 705293,
+                "confirmed": 43668680,
+                "recovered": 33112993,
+                "critical": 9850394,
+                "temp": 75.8,
+                "temp_min": 91.9,
+                "temp_max": 91.9,
+                "USD": 1,
+                "region": "NorthAmerica"  
+              },
+              {
+                "Country": "BRA",
+                "population": 310232863,
+                "deaths": 705293,
+                "confirmed": 43668680,
+                "recovered": 33112993,
+                "critical": 9850394,
+                "temp": 65.9,
+                "temp_min": 91.9,
+                "temp_max": 91.9,
+                "BRL": 5.7007,
+                "region": "SouthAmerica"
+              },
+                {
+                "Country": "IND",
+                "population": 310232863,
+                "deaths": 705293,
+                "confirmed": 43668680,
+                "recovered": 33112993,
+                "critical": 9850394,
+                "temp": 65.9,
+                "temp_min": 89.9,
+                "temp_max": 91.9,
+                "BRL": 76.3120,
+                "region": "Asia"
+                
+                }
+              ]
+    is:
+      - ErrorResponses

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<sub-flow name="Implementation-covid-api" doc:id="199acba8-d624-40b0-9e52-3ee7279cc527">
+		<http:request method="GET" doc:name="corona-api." doc:id="3a3630f3-21b6-45d7-9dd5-f6025d2e9a7c" target="corona" config-ref="HTTP_Request_covid" path="${secure::covid.path}">
+			<reconnect-forever />
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="3b7e7ea5-a275-4889-a8d2-71e2faf20a4f">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="covid"><![CDATA[%dw 2.0
+output application/json
+var d =(vars.corona.data.latest_data.deaths orderBy ((item, index)
+	-> item))filter ((item, index) -> item != null)
+var f = vars.corona.data filter ((item, index) -> 
+	item.latest_data.deaths == d[-1] or 
+	item.latest_data.deaths == d[-2] or 
+	item.latest_data.deaths == d[-3]
+)
+var r = f map ((item, index) -> item filterObject 
+	((value, key, index) -> key as String == "population"))
+var latest_data = vars.corona.data.latest_data map 
+((item, index) -> item filterObject ((value, key, index) ->
+	key as String != "calculated"
+) )
+var p = latest_data filter ((item, index) -> 
+	item.deaths == d[-1] or item.deaths == d[-2] or item.deaths == 
+	d[-3])
+---
+[r[0] ++ p[0]] + (r[1] ++ p[1]) + (r[2] ++ p[2])]]></ee:set-variable>
+				<ee:set-variable variableName="weather" ><![CDATA[%dw 2.0
+output application/json
+var d = vars.corona.data.latest_data.deaths orderBy ((item, index) -> item)
+---
+vars.corona.data filter ((item, index) -> 
+	item.latest_data.deaths == d[-1] or item.latest_data.deaths 
+	== d[-2] or item.latest_data.deaths == d[-3]
+)]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="af8c655f-1d21-49c5-a36b-84e22796f934">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="latt1"><![CDATA[%dw 2.0
+output application/json
+---
+vars.weather.coordinates.latitude[0]]]></ee:set-variable>
+				<ee:set-variable variableName="latt2"><![CDATA[%dw 2.0
+output application/json
+---
+vars.weather.coordinates.latitude[1]]]></ee:set-variable>
+				<ee:set-variable variableName="latt3"><![CDATA[%dw 2.0
+output application/json
+---
+vars.weather.coordinates.latitude[2]]]></ee:set-variable>
+				<ee:set-variable variableName="long1"><![CDATA[%dw 2.0
+output application/json
+---
+vars.weather.coordinates.longitude[0]]]></ee:set-variable>
+				<ee:set-variable variableName="long2"><![CDATA[%dw 2.0
+output application/json
+---
+vars.weather.coordinates.longitude[1]]]></ee:set-variable>
+				<ee:set-variable variableName="long3"><![CDATA[%dw 2.0
+output application/json
+
+---
+vars.weather.coordinates.longitude[2]]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+	</sub-flow>
+	
+	</mule>

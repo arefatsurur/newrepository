@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="interface-test-suite.xml" />
+	<munit:test name="interface-test-suite-get:\Descision_Service:groupb-descisionservice-int-dev-project-configTest" doc:id="72be2fca-0465-4a19-bd58-781471f97eb3" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\Descision_Service:groupb-descisionservice-int-dev-project-config" doc:id="f0eedb16-c97e-45e9-a6e6-cbac0f129891" name="get:\Descision_Service:groupb-descisionservice-int-dev-project-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="5b3df000-19fa-47bf-a027-596ba28444f5" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="interface-test-suite-groupb-descisionservice-int-dev-project-mainTest" doc:id="48856576-7b6e-4f13-a4d0-3e63e7f2017a" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to groupb-descisionservice-int-dev-project-main" doc:id="f067435c-0418-4a35-89f6-15102844be41" name="groupb-descisionservice-int-dev-project-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="b3da9a61-7f1c-4edc-8fb8-d0c687dfcf0e" expression="#[payload]" is="#[MunitTools::not(MunitTools::equalTo(0))]"/>
+		</munit:validation>
+	</munit:test>
+
+</mule>

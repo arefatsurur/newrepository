@@ -1,0 +1,25 @@
+#%RAML 1.0 SecurityScheme
+
+type: OAuth 2.0
+description: Supports basic Authentication method
+displayName: requires clinet UserName and Password 
+describedBy:
+  headers:
+    Authorization:     
+      type: string
+      required: true
+  responses:
+    401:
+      body:
+        application/json:
+          example:
+            {
+              msg: enter valid clinet id and client secret
+            }
+
+
+          
+          
+
+
+

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd">
+	<configuration doc:name="Configuration" doc:id="9f6e5798-7251-4d1d-8115-f92ae5b09fc1" defaultErrorHandler-ref="globalerrorhandlingError_Handler" />
+	<http:listener-config name="HTTP_Listener_config1*" doc:name="HTTP Listener config" doc:id="0c466a37-8716-4b1c-9b42-67248ecd8f1f" >
+		<http:listener-connection host="0.0.0.0" port="8086" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_covid" doc:name="HTTP Request configuration" doc:id="6b7ab3bc-ecb9-4683-b222-61c1f7f90b68" >
+		<http:request-connection host="corona-api.com" protocol="HTTPS" port="443"/>
+	</http:request-config>
+	<http:request-config name="HTTP_Request_weathe" doc:name="HTTP Request configuration" doc:id="3ebd271f-0089-496c-900c-ab81e9bfeba1" >
+		<http:request-connection host="api.openweathermap.org" protocol="HTTPS" port="443"/>
+	</http:request-config>
+	<http:request-config name="HTTP_Request_exchang" doc:name="HTTP Request configuration" doc:id="2484785d-1ee1-46cf-b4dd-b5d642900dda" basePath="/v6/e4bdd3c6dc3db89c1b33794e/latest/" >
+		<http:request-connection host="v6.exchangerate-api.com" protocol="HTTPS" port="443"/>
+	</http:request-config>
+	<http:request-config name="HTTP_COUNTRIE" doc:name="HTTP Request configuration" doc:id="e93b8a5e-3b3c-40bf-abc1-b4f1ad36c749" basePath="/data/v1/" >
+		<http:request-connection host="api.first.org" protocol="HTTPS"/>
+	</http:request-config>
+</mule>

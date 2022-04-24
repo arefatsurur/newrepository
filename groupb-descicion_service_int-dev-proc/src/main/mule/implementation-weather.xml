@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<sub-flow name="weather-Data" doc:id="7687ad12-0377-452e-8665-ff3b3fa7a125">
+		<http:request method="GET" doc:name="weather1" doc:id="86e362be-8d20-4285-8b7c-3e7b420f6b18" config-ref="HTTP_Request_weather" path="${secure::weather.path}">
+					<reconnect-forever />
+					<http:query-params><![CDATA[#[output application/java
+---
+{
+	appid : "fd632801f134ba675a77535236f9ea57",
+	cnt : 7,
+	lon : vars.long1,
+	exclude : "hourly,minutely,alerts",
+	lat : vars.latt1
+}]]]></http:query-params>
+				</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="bd692c8b-470f-4456-ab75-1d2333a55453">
+					<ee:message>
+					</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="weathers1"><![CDATA[%dw 2.0
+output application/json
+---
+payload.daily map ((item, index) -> item filterObject ((value, key, index) -> key as String == "temp" ) )]]></ee:set-variable>
+			</ee:variables>
+				</ee:transform>
+		<http:request method="GET" doc:name="weather2" doc:id="c4811417-6e45-4bc8-9ba9-007d97e6de69" config-ref="HTTP_Request_weather" path="${secure::weather.path}">
+					<reconnect />
+					<http:query-params><![CDATA[#[output application/java
+---
+{
+	appid : "fd632801f134ba675a77535236f9ea57",
+	cnt : 7,
+	lon : vars.long2,
+	exclude : "hourly,minutely,alerts",
+	lat : vars.latt2
+}]]]></http:query-params>
+				</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="378d4f44-59ad-4312-b031-3fd4a1a767ef">
+					<ee:message>
+					</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="weathers2"><![CDATA[%dw 2.0
+output application/json
+---
+payload.daily map ((item, index) -> item filterObject ((value, key, index) -> key as String == "temp" ) )]]></ee:set-variable>
+			</ee:variables>
+				</ee:transform>
+		<http:request method="GET" doc:name="weather3" doc:id="cf40dc0b-58a0-45cf-8dbb-7462e7bdba10" config-ref="HTTP_Request_weather" path="${secure::weather.path}">
+					<reconnect-forever />
+					<http:query-params><![CDATA[#[output application/java
+---
+{
+	appid : "fd632801f134ba675a77535236f9ea57",
+	cnt : 7,
+	lon : vars.long3,
+	exclude : "hourly,minutely,alerts",
+	lat : vars.latt3
+}]]]></http:query-params>
+				</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="48d74844-3ce5-4972-97e2-77d3a44a14c3">
+					<ee:message>
+					</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="weathers3"><![CDATA[%dw 2.0
+output application/json
+---
+payload.daily map ((item, index) -> item filterObject ((value, key, index) -> key as String == "temp" ) )]]></ee:set-variable>
+			</ee:variables>
+				</ee:transform>
+	</sub-flow>
+	</mule>

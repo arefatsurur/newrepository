@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="implementation-weather-suite.xml" />
+	<munit:test name="weather-Data-test" doc:id="8306546e-3326-40d1-82e9-1ded8261e229" >
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy weather1" doc:id="4297aa9a-ef91-4b9c-a034-e636da0f7062" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="86e362be-8d20-4285-8b7c-3e7b420f6b18" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="89cfc7e9-c0a6-4165-93d3-45154ebb5dba" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import weatherDatatest::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="a917ed84-4686-4be1-ad26-00f509e15731" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import weatherDatatest::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="41404ae0-f275-43e7-918a-4c7123ae395f" >
+				<munit:payload value="#[readUrl('classpath://weatherDatatest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://weatherDatatest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="long3" value="#[output application/json --- readUrl('classpath://weatherDatatest\set-event_variable_.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="latt3" value="#[output application/json --- readUrl('classpath://weatherDatatest\set-event_variable_1.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="long1" value="#[output application/json --- readUrl('classpath://weatherDatatest\set-event_variable_2.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://weatherDatatest\set-event_variable_3.dwl')]" />
+					<munit:variable key="long2" value="#[output application/json --- readUrl('classpath://weatherDatatest\set-event_variable_4.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="covid" value="#[output application/json --- readUrl('classpath://weatherDatatest\set-event_variable_5.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="latt2" value="#[output application/json --- readUrl('classpath://weatherDatatest\set-event_variable_6.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="latt1" value="#[output application/json --- readUrl('classpath://weatherDatatest\set-event_variable_7.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="corona" value="#[output application/json --- readUrl('classpath://weatherDatatest\set-event_variable_8.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="weather" value="#[output application/json --- readUrl('classpath://weatherDatatest\set-event_variable_9.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to weather-Data" doc:id="1b6dc9d4-20ae-49e7-8e8d-88f4e8c0656b" name="weather-Data"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="f7f24991-a05e-4be8-84e2-108e7afdc2c8" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import weatherDatatest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify weather1" doc:id="6beb848d-f503-48dd-8bec-8da07fbf9264" processor="http:request" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="86e362be-8d20-4285-8b7c-3e7b420f6b18" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="weather-Data-test1" doc:id="28e398b3-2e50-417a-ab5b-d61e3f95caf5" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock weather2" doc:id="8664e902-a615-4b2f-a60a-4c50847ea1eb" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c4811417-6e45-4bc8-9ba9-007d97e6de69" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://weatherDatatest1\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://weatherDatatest1\mock_attributes.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="long3" value="#[output application/json --- readUrl('classpath://weatherDatatest1\mock_variable_.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="latt3" value="#[output application/json --- readUrl('classpath://weatherDatatest1\mock_variable_1.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="long1" value="#[output application/json --- readUrl('classpath://weatherDatatest1\mock_variable_2.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://weatherDatatest1\mock_variable_3.dwl')]" />
+						<munit-tools:variable key="long2" value="#[output application/json --- readUrl('classpath://weatherDatatest1\mock_variable_4.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="covid" value="#[output application/json --- readUrl('classpath://weatherDatatest1\mock_variable_5.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="latt2" value="#[output application/json --- readUrl('classpath://weatherDatatest1\mock_variable_6.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="latt1" value="#[output application/json --- readUrl('classpath://weatherDatatest1\mock_variable_7.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="corona" value="#[output application/json --- readUrl('classpath://weatherDatatest1\mock_variable_8.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="weather" value="#[output application/json --- readUrl('classpath://weatherDatatest1\mock_variable_9.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="weathers1" value="#[output application/json --- readUrl('classpath://weatherDatatest1\mock_variable_10.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:spy doc:name="Spy weather3" doc:id="a56cd356-0bbe-4afe-9a9e-6986d550b35b" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="cf40dc0b-58a0-45cf-8dbb-7462e7bdba10" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="d1da17fd-fe53-48e0-8f26-e7c8fad04c32" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import weatherDatatest1::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="d94cc804-97b1-400a-8432-98a2e42c0614" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import weatherDatatest1::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="ff5a401e-67f9-462b-8777-3893fbf40250" >
+				<munit:payload value="#[readUrl('classpath://weatherDatatest1\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://weatherDatatest1\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="long3" value="#[output application/json --- readUrl('classpath://weatherDatatest1\set-event_variable_.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="latt3" value="#[output application/json --- readUrl('classpath://weatherDatatest1\set-event_variable_1.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="long1" value="#[output application/json --- readUrl('classpath://weatherDatatest1\set-event_variable_2.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://weatherDatatest1\set-event_variable_3.dwl')]" />
+					<munit:variable key="long2" value="#[output application/json --- readUrl('classpath://weatherDatatest1\set-event_variable_4.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="covid" value="#[output application/json --- readUrl('classpath://weatherDatatest1\set-event_variable_5.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="latt2" value="#[output application/json --- readUrl('classpath://weatherDatatest1\set-event_variable_6.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="latt1" value="#[output application/json --- readUrl('classpath://weatherDatatest1\set-event_variable_7.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="corona" value="#[output application/json --- readUrl('classpath://weatherDatatest1\set-event_variable_8.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="weather" value="#[output application/json --- readUrl('classpath://weatherDatatest1\set-event_variable_9.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to weather-Data" doc:id="8551b239-771b-48af-9c14-e648b3c73b86" name="weather-Data"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="7e965c9f-1947-4260-b8f3-d1f63b5135f3" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import weatherDatatest1::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify weather3" doc:id="e2fda69d-85a6-4725-890b-38433f560525" processor="http:request" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="cf40dc0b-58a0-45cf-8dbb-7462e7bdba10" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

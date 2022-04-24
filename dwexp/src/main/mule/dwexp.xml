@@ -7,7 +7,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="f6607991-98cc-4489-9a5f-30592b368bfd" >
-		<http:listener-connection host="0.0.0.0" port="8081" />
+		<http:listener-connection host="localhost" port="8081" />
 	</http:listener-config>
 	<flow name="dwexpFlow" doc:id="721fbc6a-7688-4175-90bb-cdea967747ca" >
 		<http:listener doc:name="Listener" doc:id="7929833d-4c5a-4086-a0bb-4ef734baadd7" config-ref="HTTP_Listener_config" path="/demo"/>
@@ -23,7 +23,38 @@ var num1=656
 var num2=46
 ---
 name ++  " " ++ age
-#num1+num2]]></ee:set-payload>
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dwexpFlow8" doc:id="755fc2de-1ab9-4c8d-9c5c-7d44a185f9fc" >
+		<http:listener doc:name="Listener" doc:id="16988881-7878-4044-9a8e-bdfecf3fa6e0" config-ref="HTTP_Listener_config" path="/dw"/>
+		<ee:transform doc:name="Transform Message" doc:id="4ae6f509-adfe-4110-8dc1-5729585a71e1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+//[4,5,7,2,4,9,1] map (value,index) -> {
+//	(value) : index
+//}
+{a:4,b:5,c:7,d:2,e:4,f:9,g:1,h:7} 
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="dwexpFlow7" doc:id="033569e3-0abc-4e28-9692-f6e379a1be1b" >
+		<http:listener doc:name="Listener" doc:id="571b3af4-5f96-4c5e-b08f-b404db668ace" config-ref="HTTP_Listener_config" path="/dwcondition"/>
+		<ee:transform doc:name="Transform Message" doc:id="2534b2a1-a892-4105-9b47-0043c8689e4a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var country = payload.nation
+---
+if (country == "USA")
+{currency : "USD"}
+else if (country=="england")
+{currency : "pound"}
+else {currency : "dw"}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 	</flow>

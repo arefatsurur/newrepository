@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<sub-flow name="exchange" doc:id="5977dbcd-6425-4b4f-af4e-3727b8952897">
+		<ee:transform doc:name="Transform Message" doc:id="e469ccdf-6ecd-4928-b1e4-360359ad9d6f">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+readUrl("classpath://code.json","application/json")]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="c13b9af4-edc8-4edc-ba78-35233cf1c961">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="exchangeRate"><![CDATA[%dw 2.0
+output application/json
+var p = payload filter ((item, index) ->item.CountryCode == vars.code1 or item.CountryCode == vars.code2 or item.CountryCode == vars.code3)
+---
+p.Code]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<http:request method="GET" doc:name="exchange" doc:id="920b1b52-015d-48dd-9836-a6d5b19eaa1c" config-ref="HTTP_Request_exchange" path="${secure::exchange.path}">
+			<reconnect-forever />
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="fbbbaf54-119a-4bfa-9dc5-8a142ed5059e">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="Exchange2"><![CDATA[%dw 2.0
+output application/json
+var p = payload filterObject ((value, key, index) -> (key as String != "conversion_rates"))
+var f = payload.conversion_rates  filterObject ((value, key, index) -> (key as String == vars.exchangeRate[1]))
+---
+p ++ "conversion_rates": f]]></ee:set-variable>
+				<ee:set-variable variableName="Exchange1"><![CDATA[%dw 2.0
+output application/json
+var p = payload filterObject ((value, key, index) -> (key as String != "conversion_rates"))
+var f = payload.conversion_rates  filterObject ((value, key, index) -> (key as String == vars.exchangeRate[0]))
+---
+p ++ "conversion_rates": f]]></ee:set-variable>
+				<ee:set-variable variableName="Exchange3"><![CDATA[%dw 2.0
+output application/json
+var p = payload filterObject ((value, key, index) -> (key as String != "conversion_rates"))
+var f = payload.conversion_rates  filterObject ((value, key, index) -> (key as String == vars.exchangeRate[2]))
+---
+p ++ "conversion_rates": f]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+	</sub-flow>
+	</mule>
